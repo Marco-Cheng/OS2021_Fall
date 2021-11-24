@@ -31,6 +31,7 @@ private:
     std::map<std::thread::id, std::map<RESOURCE, int> > claim;
     std::map<std::thread::id, std::map<RESOURCE, int> > alloc;
     std::vector<std::thread::id> active;
+    std::mutex mtx;
     int num;
     ThreadManager *tmgr;
 };

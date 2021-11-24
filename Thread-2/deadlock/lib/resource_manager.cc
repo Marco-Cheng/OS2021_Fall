@@ -1,6 +1,7 @@
 #include <mutex>
 #include <thread>
 #include <chrono>
+#include <iostream>
 #include <condition_variable>
 #include "resource_manager.h"
 
@@ -61,6 +62,7 @@ int ResourceManager::request(RESOURCE r, int amount) {
 			this->resource_mutex[r].unlock();
 			if (tag) return 0;	
     	}
+    	//std::cout<<this_id<<std::endl;
     }
     	
     return 0;
@@ -71,13 +73,13 @@ void ResourceManager::release(RESOURCE r, int amount) {
     std::unique_lock<std::mutex> lk(this->resource_mutex[r]);
     this->resource_amount[r] += amount;
     this->resource_cv.notify_all();
-    this->resource_mutex[r].unlock(); 
 }
 
 void ResourceManager::budget_claim(std::map<RESOURCE, int> budget) {
     // This function is called when some workload starts.
     // The workload will eventually consume all resources it claims
     auto this_id = std::this_thread::get_id();
+    std::unique_lock<std::mutex> lk(this->mtx);
     if (this->active.size() == 0){
     	this->num = 0;
     }

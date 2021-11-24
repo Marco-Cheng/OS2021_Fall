@@ -26,7 +26,6 @@ public:
     void release(RESOURCE, int amount);
 private:
     std::map<RESOURCE, int> resource_amount;
-    std::map<RESOURCE, std::mutex> resource_mutex;
     std::condition_variable resource_cv;
     std::map<std::thread::id, std::map<RESOURCE, int> > claim;
     std::map<std::thread::id, std::map<RESOURCE, int> > alloc;

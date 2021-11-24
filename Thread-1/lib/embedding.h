@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <queue>
+#include <mutex>
+
 
 namespace proj1 {
 
@@ -58,6 +61,8 @@ public:
         return this->emb_matx.empty()? 0: this->get_embedding(0)->get_length();
     }
     bool operator==(const EmbeddingHolder&);
+    std::vector<std::mutex *> locks;
+    
 private:
     EmbeddingMatrix emb_matx;
 };

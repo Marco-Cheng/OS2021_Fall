@@ -10,6 +10,7 @@
 #include "lib/embedding.h" 
 #include "lib/instruction.h"
 
+
 namespace proj1 {
 
 void run_one_instruction(Instruction inst, EmbeddingHolder* users, EmbeddingHolder* items) {
@@ -66,7 +67,9 @@ void run_one_instruction(Instruction inst, EmbeddingHolder* users, EmbeddingHold
 }
 } // namespace proj1
 
+
 int main(int argc, char *argv[]) {
+	
 
     proj1::EmbeddingHolder* users = new proj1::EmbeddingHolder("data/q0.in");
     proj1::EmbeddingHolder* items = new proj1::EmbeddingHolder("data/q0.in");

@@ -98,3 +98,22 @@ cc_test(
 	  ":model_lib",
       ],
 )
+
+cc_library(
+    name = "epoch_lib",
+    srcs = [
+        "epoch.cc",
+        ],
+    hdrs = [
+        "epoch.h",
+        ],
+	deps = [
+        ":embedding_lib",
+		":utils_lib",
+        ":instruction_lib",
+        ":model_lib",
+    ],
+	visibility = [
+		"//visibility:public",
+	],
+)

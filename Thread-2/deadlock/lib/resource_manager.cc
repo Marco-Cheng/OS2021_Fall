@@ -13,14 +13,14 @@ int ResourceManager::request(RESOURCE r, int amount) {
 
     auto this_id = std::this_thread::get_id();
     
+    
     while (true) {
     	
-    	std::unique_lock<std::mutex> lk(this->resource_mutex[r]);
+    	std::unique_lock<std::mutex> lk(this->mtx);
 		if (this->resource_cv.wait_for(
             lk, std::chrono::milliseconds(100),
             [this, r, amount] { return this->resource_amount[r] >= amount; }
         )){
-        	this->resource_mutex[r].lock();
     		bool tag = true;
     		this->resource_amount[r] -= amount;
     		this->alloc[this_id][r] += amount;
@@ -59,7 +59,6 @@ int ResourceManager::request(RESOURCE r, int amount) {
     			this->resource_amount[r] += amount;
     			this->alloc[this_id][r] -= amount;
     		}
-			this->resource_mutex[r].unlock();
 			if (tag) return 0;	
     	}
     	//std::cout<<this_id<<std::endl;
@@ -70,7 +69,7 @@ int ResourceManager::request(RESOURCE r, int amount) {
 
 void ResourceManager::release(RESOURCE r, int amount) {
     if (amount <= 0)  return;
-    std::unique_lock<std::mutex> lk(this->resource_mutex[r]);
+    std::unique_lock<std::mutex> lk(this->mtx);
     this->resource_amount[r] += amount;
     this->resource_cv.notify_all();
 }
